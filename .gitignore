@@ -7,6 +7,10 @@ ServiceStatus/static
 ServiceStatus/static/
 ServiceStatus/static/*
 
+status/migrations
+status/migrations/
+status/migrations/*
+
 ServiceStatus/settings.py
 
 .DS_Store
