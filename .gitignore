@@ -3,6 +3,10 @@ venv
 venv/
 venv/*
 
+AMPATH
+AMPATH/
+AMPATH/*
+
 ServiceStatus/static
 ServiceStatus/static/
 ServiceStatus/static/*
