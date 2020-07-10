@@ -300,7 +300,7 @@ class SubscriptionView(View):
 
         # Remove all the variable sessions related to this view
         # self.remove_sessions(request)
-
+        
         # Getting values previously entered by user if any
         user_name = request.GET.get('user_name')
         user_email = request.GET.get('subscriber_email')
@@ -310,15 +310,49 @@ class SubscriptionView(View):
             form = SubscriberDataForm(initial={'name': user_name, 'email': user_email})
         else:
             form = SubscriberDataForm()
+            regions = Region.objects.all()
 
-        self.context = {"form": form, "subscription_active": True, 'subscribed': False}
+        self.context = {"form": form, "regions": regions, "subscription_active": True, 'subscribed': False}
+
+        #Apply regional filters to the Subscriptions
+        if 'filter_region' in request.GET:
+
+            #Maps values from the service table to values in the regions table in a dictionary.
+            service_region_map = {
+                'Cape Town': 'Africa',
+                'Fortaleza': 'Brazil',
+                'São Paulo': 'Brazil',
+                'Panama City': 'Panama',
+                'San Juan': 'Puerto Rico',
+                'Santiago': 'Chile',
+                'Miami': 'US',
+                'Boca Raton': 'US',
+                'USA': 'US'}
+
+            #Get selected region from template
+            selected_region = request.GET.get('filter_region')
+            filtered_services = []
+
+            #Add all services related to the region(by service_region_map dict) to the list: filtered_services
+            #"US" requires a special case since it's a country tied to cities, instead of vice-versa.
+            if selected_region == "US":
+                for key, value in service_region_map.items():
+                    if selected_region == value:
+                        filtered_services.append(key)
+            else:
+                for key in service_region_map:
+                    if selected_region == key:
+                        filtered_services.append(service_region_map[key])
+
+            #Pass list of services into filtering function
+            form.filter_services(filtered_services)
 
         if service_id is not None:
             obj = get_object_or_404(Service, id=service_id)
             self.context['object'] = obj
             request.session['object'] = obj.name
             request.session['service_id'] = service_id
-
+        
             self.context['service_specific'] = True
 
         else:
