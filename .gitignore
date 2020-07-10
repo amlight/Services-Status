@@ -12,6 +12,7 @@ status/migrations/
 status/migrations/*
 
 ServiceStatus/settings.py
+status/tests_settings.py
 
 .DS_Store
 
