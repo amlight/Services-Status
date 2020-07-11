@@ -254,6 +254,15 @@ class TicketForm(forms.ModelForm):
 
     cleaned_data = None
 
+    # client_domain = forms.ModelChoiceField(
+    #     queryset=ClientDomain.objects.all(),
+    #     required=False
+    # )
+
+    # services = forms.ModelMultipleChoiceField(
+    #     queryset=Service.objects.all(),
+    #     required=False)
+
     class Meta:
         model = Ticket
         fields = '__all__'
@@ -318,6 +327,44 @@ class TicketForm(forms.ModelForm):
                     self.instance.user_notified = True
                 except Exception as e:
                     print(e)  # we should log this as an error
+
+            # if self.cleaned_data['client_domain']:
+            #     # all services under the domain are affected
+            #     # all sub-services under each service is also
+            #     # affected
+
+            #     # client domain chosen by user
+            #     client_domain = self.cleaned_data['client_domain']
+
+            #     # |= allows us to create a union of querysets
+            #     # This allows for us to add on to the services
+            #     # if the user already chooses a service or
+            #     # services.
+            #     self.cleaned_data['services'] |= client_domain.services.all()
+
+            # if self.cleaned_data['services']:
+            #     # associated_sub_services
+            #     services = self.cleaned_data['services']
+
+            #     querysets = []
+            #     for service in services:
+
+            #         # get sub service under service from Topology
+            #         if Topology.objects.filter(service=service).values('subservices').exists():
+            #             topology_queryset = Topology.objects.filter(
+            #                 service=service)
+            #             for topology in topology_queryset:
+            #                 querysets.append(topology.subservices.all())
+
+            #     result_queryset = SubService.objects.none()
+            #     for query in querysets:
+            #         result_queryset = result_queryset | query
+
+            #     # |= allows us to create a union of querysets
+            #     # This allows for us to add on to the subservices
+            #     # if the user already chooses a sub-service or
+            #     # sub-services.
+            #     self.cleaned_data['sub_services'] |= result_queryset
 
 
 class TicketHistoryInlineFormset(forms.models.BaseInlineFormSet):
