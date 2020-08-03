@@ -23,7 +23,7 @@ class ClientDomainForm(forms.ModelForm):
         if 'services' in self.cleaned_data:
             services = self.cleaned_data['services']
 
-            tmp_inter_services = []  # list to hold inter-domain services chosen by user
+            # tmp_inter_services = []  # list to hold inter-domain services chosen by user
 
             for service in services:
                 if service.scope == Service.INTER_DOMAIN:
@@ -253,7 +253,6 @@ class TicketForm(forms.ModelForm):
     )
 
     cleaned_data = None
-
 
     class Meta:
         model = Ticket
@@ -504,13 +503,12 @@ class SubscriberDataForm(forms.ModelForm):
         # Set filtered services to initial value of servs, then
         else:
             filtered_services = Service.objects.filter(name__icontains=servs[0])
-            qs1 = Service.objects.none()
+            # qs1 = Service.objects.none()
 
             # Iterate through all values passed to servs and add them to the form's queryset.
-            for serv in servs:
-                qs1 = Service.objects.filter(name__icontains=serv)
+            for service in servs:
+                qs1 = Service.objects.filter(name__icontains=service)
                 self.fields['services'].queryset = qs1 | filtered_services
-
 
     def check_mail_domain(self):
         """
@@ -634,7 +632,7 @@ class SubscriberForm(forms.ModelForm):
         """
         Method to update the user token after submitting its information
         This function was thought to be used considering the User ID as a reference
-        :param user_id:
+        :param:
         :return:
         """
         _token = secrets.token_hex(64)

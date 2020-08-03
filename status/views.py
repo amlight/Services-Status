@@ -76,12 +76,6 @@ class ServicesStatusView(View):
         if queryset:
             recent_tickets_list = recent_tickets | queryset
 
-            # recent_high_high_priority_tickets = list()
-            # recent_high_low_priority_tickets = list()
-            # recent_medium_high_priority_tickets = list()
-            # recent_medium_low_priority_tickets = list()
-            # recent_low_priority_ticket = list()
-
             ticket_priorities = dict()
             for ticket in recent_tickets_list:
                 status = ticket.status.tag
@@ -89,43 +83,6 @@ class ServicesStatusView(View):
                 if status not in ticket_priorities.keys():
                     ticket_priorities[status] = list()
                 ticket_priorities[status].append(ticket)
-
-                # if status == "Outage":
-                #     if status not in ticket_priorities.keys():
-                #         ticket_priorities[status] = list()
-                #     ticket_priorities[status].append(ticket)
-                #     # recent_high_high_priority_tickets.append(ticket)
-                #
-                # elif status == "Alert":
-                #     if status not in ticket_priorities.keys():
-                #         ticket_priorities[status] = list()
-                #     ticket_priorities[status].append(ticket)
-                #     # recent_high_low_priority_tickets.append(ticket)
-                #
-                # elif status == "In Process":
-                #     if status not in ticket_priorities.keys():
-                #         ticket_priorities[status] = list()
-                #     ticket_priorities[status].append(ticket)
-                #     # recent_medium_high_priority_tickets.append(ticket)
-                #
-                # elif status == "Planned":
-                #     if status not in ticket_priorities.keys():
-                #         ticket_priorities[status] = list()
-                #     ticket_priorities[status].append(ticket)
-                #     # recent_medium_low_priority_tickets.append(ticket)
-                #
-                # else:
-                #     if status not in ticket_priorities.keys():
-                #         ticket_priorities[status] = list()
-                #     ticket_priorities[status].append(ticket)
-                #     # recent_low_priority_ticket.append(ticket)
-
-            # queryset_high_high = Ticket.objects.none()
-            # if len(recent_high_high_priority_tickets):
-            #     custom_list = [ticket.id for ticket in recent_high_high_priority_tickets]
-            # queryset_high_high = Ticket.objects.filter(pk__in=custom_list).order_by('-pk')
-            #     for in_ticket in queryset_high_high:
-            #         ticket_list.append(in_ticket)
 
             ticket_status = Status.objects.all().order_by('visual_order')
             for t_status in ticket_status:
@@ -136,75 +93,9 @@ class ServicesStatusView(View):
                     for in_ticket in queryset:
                         ticket_list.append(in_ticket)
 
-            # if "Outage" in ticket_priorities.keys() and len(ticket_priorities['Outage']):
-            #     custom_list = [ticket.id for ticket in ticket_priorities['Outage']]
-            #     queryset = Ticket.objects.filter(pk__in=custom_list).order_by('-pk')
-            #
-            #     for in_ticket in queryset:
-            #         ticket_list.append(in_ticket)
-
-            # queryset_high_low = Ticket.objects.none()
-            # if len(recent_high_low_priority_tickets):
-            #     custom_list = [ticket.id for ticket in recent_high_low_priority_tickets]
-            #     for in_ticket in queryset_high_low:
-            #         ticket_list.append(in_ticket)
-
-            # if "Alert" in ticket_priorities.keys() and len(ticket_priorities['Alert']):
-            #     custom_list = [ticket.id for ticket in ticket_priorities['Alert']]
-            #     queryset = Ticket.objects.filter(pk__in=custom_list).order_by('-pk')
-            #
-            #     for in_ticket in queryset:
-            #         ticket_list.append(in_ticket)
-
-            # queryset_medium_high = Ticket.objects.none()
-            # if len(recent_medium_high_priority_tickets):
-            #     custom_list = [ticket.id for ticket in recent_medium_high_priority_tickets]
-            #     for in_ticket in queryset_medium_high:
-            #         ticket_list.append(in_ticket)
-
-            # if "In Process" in ticket_priorities.keys() and len(ticket_priorities['In Process']):
-            #     custom_list = [ticket.id for ticket in ticket_priorities['In Process']]
-            #     queryset = Ticket.objects.filter(pk__in=custom_list).order_by('-pk')
-            #
-            #     for in_ticket in queryset:
-            #         ticket_list.append(in_ticket)
-
-            # queryset_medium_low = Ticket.objects.none()
-            # if len(recent_medium_low_priority_tickets):
-            #     custom_list = [ticket.id for ticket in recent_medium_low_priority_tickets]
-            #     for in_ticket in queryset_medium_low:
-            #         ticket_list.append(in_ticket)
-
-            # if "Planned" in ticket_priorities.keys() and len(ticket_priorities['Planned']):
-            #     custom_list = [ticket.id for ticket in ticket_priorities['Planned']]
-            #     queryset = Ticket.objects.filter(pk__in=custom_list).order_by('-pk')
-            #
-            #     for in_ticket in queryset:
-            #         ticket_list.append(in_ticket)
-
-            # queryset_low = Ticket.objects.none()
-            # if len(recent_low_priority_ticket):
-            #     custom_list = [ticket.id for ticket in recent_low_priority_ticket]
-            #     for in_ticket in queryset_low:
-            #         ticket_list.append(in_ticket)
-
-            # if "No Issues" in ticket_priorities.keys() and len(ticket_priorities['No Issues']):
-            #     custom_list = [ticket.id for ticket in ticket_priorities['No Issues']]
-            #     queryset = Ticket.objects.filter(pk__in=custom_list).order_by('-pk')
-            #
-            #     for in_ticket in queryset:
-            #         ticket_list.append(in_ticket)
-
-            # new_queryset = queryset_high_high.union(queryset_high_low,
-            #                                         queryset_medium_high,
-            #                                         queryset_medium_low,
-            #                                         queryset_low)
-
             for ticket in ticket_list:
-                # if ticket.is_in_process and ticket.status.tag == "Planned":
-                #     ticket.status.tag = "In Process"
-                last_log = TicketLog.objects.filter(ticket=ticket.id)\
-                    .filter(action_date__range=["2012-01-01",timezone.now()]).order_by('action_date').last()
+                last_log = TicketLog.objects.filter(ticket=ticket.id) \
+                    .filter(action_date__range=["2012-01-01", timezone.now()]).order_by('action_date').last()
                 if last_log is not None:
                     ticket.latest_log = last_log.status
                 else:
@@ -308,56 +199,10 @@ class ServicesStatusView(View):
 
                 # if active_tickets_per_day:
                 if active_tickets_per_day:
-
-                    # Separating tickets in groups by priority
-                    # recent_high_high_priority_tickets = list()
-                    # recent_high_low_priority_tickets = list()
-                    # recent_medium_high_priority_tickets = list()
-                    # recent_medium_low_priority_tickets = list()
-
-                    # for ticket in active_tickets_per_day:
                     for ticket in active_tickets_per_day:
-
-                        # Grouping tickets in lists by priority
-                        # status = ticket.status.tag
-
-                        # if status == "Outage":
-                        #     recent_high_high_priority_tickets.append(ticket)
-                        # elif status == "Alert":
-                        #     recent_high_low_priority_tickets.append(ticket)
-                        # elif status == "In Process":
-                        #     recent_medium_high_priority_tickets.append(ticket)
-                        # elif status == "Planned":
-                        #     recent_medium_low_priority_tickets.append(ticket)
-
                         status_per_day[i].append({
                             ticket.id:
                                 ticket.status})
-
-                    # Attaching tickets in a list of dictionaries by priority
-                    # for iticket in recent_high_high_priority_tickets:
-                    #     status_per_day[i].append({
-                    #         iticket.id:
-                    #             iticket.status})
-                    #
-                    # for iticket in recent_high_low_priority_tickets:
-                    #     status_per_day[i].append({
-                    #         iticket.id:
-                    #             iticket.status})
-                    #
-                    # for iticket in recent_medium_high_priority_tickets:
-                    #     status_per_day[i].append({
-                    #         iticket.id:
-                    #             iticket.status})
-                    #
-                    # for iticket in recent_medium_low_priority_tickets:
-                    #     status_per_day[i].append({
-                    #         iticket.id:
-                    #             iticket.status})
-                    #
-                    # if not recent_high_high_priority_tickets and not recent_high_low_priority_tickets and \
-                    #         not recent_medium_high_priority_tickets and not recent_medium_low_priority_tickets:
-                    #     status_per_day.append({'None': no_issues})
 
                     if not status_per_day[i]:
                         status_per_day[i].append({'None': no_issues})
@@ -659,13 +504,10 @@ class ServiceHistoryView(View):
 
     template_name = "ss_history_visualization.html"
 
-    def get(self, request, subservice_id=None, service_id=None, domain_id=None,  *args, **kwargs):
+    def get(self, request, subservice_id=None, service_id=None, domain_id=None, *args, **kwargs):
 
-        context = {
-            "active_nav": 1
-        }
+        context = {"active_nav": 1, 'service_history_view': True}
 
-        context['service_history_view'] = True
         page_focus = None
 
         searching = False
@@ -678,15 +520,7 @@ class ServiceHistoryView(View):
                 aux_list = list()
 
                 if search_value is not '':
-                    for ticket in tickets_list:
-                        if (search_value.lower() in (ticket.ticket_id.lower(),
-                                                     ticket.action_description.lower(),
-                                                     ticket.status.tag.lower())):
-                            aux_list.append(ticket)
-
-                    tickets_list = aux_list
-                    searching = True
-                    context['search_value'] = search_value
+                    searching, tickets_list = set_search_context(aux_list, context, search_value, tickets_list)
 
                     if not tickets_list and not searching:
                         context['no_tickets'] = True
@@ -716,29 +550,7 @@ class ServiceHistoryView(View):
                     tickets_list = tickets_list.union(queryset)
 
             tickets_list = tickets_list.order_by('-pk')
-            if 'search_tickets' in request.GET:
-                search_value = request.GET['search']
-                aux_list = list()
-
-                if search_value is not '':
-                    for ticket in tickets_list:
-                        if (search_value.lower() in (ticket.ticket_id.lower(),
-                                                     ticket.action_description.lower(),
-                                                     ticket.status.tag.lower())):
-                            aux_list.append(ticket)
-
-                    tickets_list = aux_list
-                    searching = True
-                    context['search_value'] = search_value
-
-            context['tickets_list'] = tickets_list
-
-            if not tickets_list and not searching:
-                context['no_tickets'] = True
-
-            if not tickets_list and searching:
-                context['no_results'] = True
-
+            searching = self.set_search_request(context, request, searching, tickets_list)
 
         # Focus on service
         if service_id is not None:
@@ -760,28 +572,7 @@ class ServiceHistoryView(View):
                 if queryset:
                     tickets_list = tickets_list | queryset
 
-            if 'search_tickets' in request.GET:
-                search_value = request.GET['search']
-                aux_list = list()
-
-                if search_value is not '':
-                    for ticket in tickets_list:
-                        if (search_value.lower() in (ticket.ticket_id.lower(),
-                                                     ticket.action_description.lower(),
-                                                     ticket.status.tag.lower())):
-                            aux_list.append(ticket)
-
-                    tickets_list = aux_list
-                    searching = True
-                    context['search_value'] = search_value
-
-            context['tickets_list'] = tickets_list
-
-            if not tickets_list and not searching:
-                context['no_tickets'] = True
-
-            if not tickets_list and searching:
-                context['no_results'] = True
+            self.set_search_request(context, request, searching, tickets_list)
 
         # Focus on subservice
         if subservice_id is not None:
@@ -798,28 +589,7 @@ class ServiceHistoryView(View):
             if queryset:
                 tickets_list = tickets_list | queryset
 
-            if 'search_tickets' in request.GET:
-                search_value = request.GET['search']
-                aux_list = list()
-
-                if search_value is not '':
-                    for ticket in tickets_list:
-                        if (search_value.lower() in (ticket.ticket_id.lower(),
-                                                     ticket.action_description.lower(),
-                                                     ticket.status.tag.lower())):
-                            aux_list.append(ticket)
-
-                    tickets_list = aux_list
-                    searching = True
-                    context['search_value'] = search_value
-
-            context['tickets_list'] = tickets_list
-
-            if not tickets_list and not searching:
-                context['no_tickets'] = True
-
-            if not tickets_list and searching:
-                context['no_results'] = True
+            self.set_search_request(context, request, searching, tickets_list)
 
         subservice_list = SubService.objects.all()
         context['available_subservices'] = subservice_list
@@ -834,6 +604,37 @@ class ServiceHistoryView(View):
         context['page_focus'] = page_focus
 
         return render(request, self.template_name, context)
+
+    @staticmethod
+    def set_search_request(context, request, searching, tickets_list):
+
+        if 'search_tickets' in request.GET:
+            search_value = request.GET['search']
+            aux_list = list()
+
+            if search_value is not '':
+                searching, tickets_list = set_search_context(aux_list, context, search_value,
+                                                             tickets_list)
+        context['tickets_list'] = tickets_list
+        if not tickets_list and not searching:
+            context['no_tickets'] = True
+        if not tickets_list and searching:
+            context['no_results'] = True
+        return searching
+
+
+def set_search_context(aux_list, context, search_value, tickets_list):
+
+    for ticket in tickets_list:
+        if (search_value.lower() in (ticket.ticket_id.lower()) or
+                (search_value.lower() in ticket.action_description.lower()) or
+                (search_value.lower() in ticket.status.tag.lower())):
+
+            aux_list.append(ticket)
+    tickets_list = aux_list
+    searching = True
+    context['search_value'] = search_value
+    return searching, tickets_list
 
 
 class ServiceHistoryDetailsView(ListView):
@@ -854,7 +655,6 @@ class ServiceHistoryDetailsView(ListView):
             # Getting ticket instance
             obj = get_object_or_404(Ticket, id=ticket_id)
             context['object'] = obj
-
 
             # Getting list of events associated with this ticket
             ticket_events = TicketLog.objects.filter(ticket=obj)
@@ -879,15 +679,12 @@ class ServiceHistoryDetailsView(ListView):
                 ticket = service_tickets[prev]
                 context['prev_ticket'] = ticket
 
-
             # Getting index of previous ticket
             _next = index + 1
 
             if _next <= count - 1:
                 ticket = service_tickets[_next]
                 context['next_ticket'] = ticket
-
-
 
             # List of clients, with services and associated subservices.
             # Manually associate subservice with service and domains, based on topography
@@ -932,20 +729,12 @@ class ServiceHistoryDetailsView(ListView):
                 aux_list = list()
 
                 if search_value is not '':
-                    for ticket in tickets_list:
-                        if (search_value.lower() in (ticket.ticket_id.lower(),
-                                                     ticket.action_description.lower(),
-                                                     ticket.status.tag.lower())):
-                            aux_list.append(ticket)
-
-                    tickets_list = aux_list
-                    searching = True
-                    context['search_value'] = search_value
+                    searching, tickets_list = set_search_context(aux_list, context, search_value,
+                                                                 tickets_list)
 
             context['tickets_list'] = tickets_list
 
             # Find index of current page in tickets list.
-
             index = 0
             count = 0
             for ticket in tickets_list:
@@ -960,10 +749,11 @@ class ServiceHistoryDetailsView(ListView):
                 context['prev_ticket'] = ticket
 
             # Getting index of previous ticket
-            next = index + 1
+            i_next = index + 1
 
-            if next < tickets_list.count():
-                ticket = tickets_list[next]
+            # if i_next < tickets_list.count():
+            if i_next < len(tickets_list):
+                ticket = tickets_list[i_next]
                 context['next_ticket'] = ticket
 
         return render(request, self.template_name, context)
