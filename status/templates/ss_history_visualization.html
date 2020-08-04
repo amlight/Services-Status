@@ -16,7 +16,6 @@
                             <div class="col-10 p-0">
                                 <div class="form-group m-0">
                                     <input type="text" name="search" placeholder="Search..." class="form-control"
-
                                             {#Describe this conditional statement functionality#}
                                             {% if search_value %} value="{{ search_value }}" {% endif %}>
 
@@ -101,8 +100,8 @@
             </div>
             <div class="container m-0 p-0" id="incidents_data">
 
-                {#Describe this conditional statement functionality#}
-                {% if no_tickets %} <!--  If there are no tickets for this service  -->
+                <!--  If there are no tickets for this service  -->
+                {% if no_tickets %}
 
                     <div class="row d-flex justify-content-center mt-4">
                         <h3 style="text-align: center;">No incidents have been reported for this service</h3>
@@ -113,31 +112,32 @@
                         </a>
                     </div>
 
-                    {#Describe this conditional statement functionality#}
-                {% elif no_results %} <!--  If user searched and no results found  -->
+                <!--  If user searched and no results found  -->
+                {% elif no_results %}
 
                     <div class="row mt-4 d-flex justify-content-center">
                         <h3>No results found for your search criteria</h3>
                     </div>
                     <div class="row mt-4 d-flex justify-content-center">
                         {% if page_focus == "subservice" %}
-                        <a class="link" href="/history/subservice_id:{{ object.id }}">
-                            <p>See all incidents</p>
-                        </a>
+                            <a class="link" href="/history/subservice_id:{{ object.id }}">
+                                <p>See all incidents</p>
+                            </a>
                         {% elif page_focus == "service" %}
-                        <a class="link" href="/history/service_id:{{ object.id }}">
-                            <p>See all incidents</p>
-                        </a>
+                            <a class="link" href="/history/service_id:{{ object.id }}">
+                                <p>See all incidents</p>
+                            </a>
                         {% elif page_focus == "domain" %}
-                        <a class="link" href="/history/domain_id:{{ object.id }}">
-                            <p>See all incidents</p>
-                        </a>
+                            <a class="link" href="/history/domain_id:{{ object.id }}">
+                                <p>See all incidents</p>
+                            </a>
                         {% endif %}
 
                     </div>
 
-                    {#Describe this conditional statement functionality#}
+                {#Describe this conditional statement functionality#}
                 {% else %}
+
                     {#Describe this "for" statement functionality#}
                     {% for ticket in tickets_list %}
 
@@ -190,17 +190,20 @@
 
             </div>
         </div>
+
         <!--  End of tickets history section  -->
 
         <div class="container py-2 mb-4">
             <div class="row mt-2">
                 <div class="col-6" id="ticket_legend"></div>
                 <div class="col-6 d-flex justify-content-end" id="subscribe_to_service">
+
                     {% if page_focus == "service" %}
-                    <a href="/subscription/{{ object.id }}">
-                        <button name="subscribe_to_service" class="btn btn-dark">Subscribe to this service</button>
-                    </a>
+                        <a href="/subscription/{{ object.id }}">
+                            <button name="subscribe_to_service" class="btn btn-dark">Subscribe to this service</button>
+                        </a>
                     {% endif %}
+
                 </div>
             </div>
         </div>

@@ -16,7 +16,8 @@
             <div class="col-10">
 
                 <!--  Ticket main information section  -->
-                        <!-- Domains affected section -->
+
+                <!-- Domains affected section -->
                 <p style="display: inline;">
                     <span class="bold">Domains affected:</span>
                 </p>
@@ -32,11 +33,12 @@
 
                 <p style="display: inline;">
                     <span class="bold">Services affected:</span>
-                     {% if service %}
-                    <a class="filter_option bold" href="/details/{{ object.id  }}">Clear Filters</a>
+                    {% if service %}
+                        <a class="filter_option bold" href="/details/{{ object.id  }}">Clear Filters</a>
                     {% endif %}
                 </p>
-                            <!-- Services affected section -->
+
+                <!-- Services affected section -->
                 <ul>
                     {% for ticket_service in ticket_services %}
                         <li style="float: left;" class="mx-3 filter_option {% if service.name == ticket_service.name %} active_option {% endif %}" >
@@ -49,7 +51,7 @@
                     <div class="clearfix"></div>
                 </ul>
 
-                            <!-- Sub-services affected section -->
+                <!-- Sub-services affected section -->
                 <p style="display: inline;">
                     <span class="bold">Sub-services affected:</span>
                 </p>
@@ -96,6 +98,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!--  End of Ticket main information section  -->
 
                 <div class="row justify-content-between" id="control_section">

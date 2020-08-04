@@ -98,16 +98,17 @@
                 <form action="." method="get">
 
                     <!-- This loop prints each region from the database as a label, then creates a (custom)checkbox for each printed region.-->
+
                     {#Describe this "for" statement functionality#}
                     {% for region in region_list %}
-                    <span style="display: inline-block" id="region_selector">
-                        <label>{{ region }}</label>
-                        <label class="switch">
-                            <input type="checkbox" name="regions" value="{{ region }}"
-                            {% if region.name in regions_checked %}checked{% endif %}>
-                            <span class="slider round"></span>
-                        </label>
-                    </span>
+                        <span style="display: inline-block" id="region_selector">
+                            <label>{{ region }}</label>
+                            <label class="switch">
+                                <input type="checkbox" name="regions" value="{{ region }}"
+                                {% if region.name in regions_checked %}checked{% endif %}>
+                                <span class="slider round"></span>
+                            </label>
+                        </span>
                     <!-- Potential cosmetic issues with text wrapping if the regions list grows larger. -->
                     {% endfor %}
                     <br/>
@@ -231,7 +232,9 @@
                     {% endif %}
 
                 </div>
+
                 <!--  End of Table Data  -->
+
             </div>
             <div class="col-2 d-none d-lg-inline">
                 <!--  Legend section  -->
