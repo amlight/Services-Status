@@ -11,7 +11,7 @@ django-smart-selects==1.5.9
 django-smtp-ssl==1.0
 django-tinymce==3.3.0
 gunicorn==20.1.0
-isort==5.8.0
+isort==5.9.3
 lazy-object-proxy==1.6.0
 mccabe==0.6.1
 mysqlclient==2.0.3
