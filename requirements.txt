@@ -1,5 +1,5 @@
 asgiref==3.4.1
-astroid==2.5.8
+astroid==2.6.6
 Django==3.2.4
 django-admin-list-filter-dropdown==1.0.3
 django-ckeditor==6.1.0
